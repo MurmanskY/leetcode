@@ -43,12 +43,7 @@ public:
 
 
 
-
-
-
-
-
-class Solution3 {
+class Solution2 {
 // 遍历方法，超时
 public:
     int maxArea(vector<int>& height) {
@@ -65,10 +60,55 @@ public:
 
 
 
-int main() {
-    vector<int> v = {1,1};
 
-    Solution s;
+class Solution3 {
+    // tow pointer，拿着两块板子，手里握着最大的板子，移动最小的板子找大的。
+public:
+    int maxArea(vector<int>& height) {
+        int le = 0, ri = height.size()-1;
+        int ans = min(height[le], height[ri]) * (ri - le); // 初始化面积
+        bool stop_flag = false;
+        while(le < ri) {
+            cout << 1 << endl;
+            if(height[le] < height[ri]) {
+                stop_flag = true;
+                for(int i = le; i < ri; i++) {
+                    if (height[i] > height[le]) {
+                        le = i;
+                        ans = max(ans, min(height[le], height[ri]) * (ri-le));
+                        stop_flag = false;
+                        break;
+                    }
+                }
+            }else {
+                stop_flag = true;
+                for(int i = ri; i > le; i--) {
+                    if (height[i] > height[ri]) {
+                        ri = i;
+                        ans = max(ans, min(height[le], height[ri]) * (ri-le));
+                        stop_flag = false;
+                        break;
+                    }
+                }
+            }
+            if(stop_flag) {
+                break;
+            }
+        }
+        return ans;
+    }
+};
+
+
+
+
+
+
+
+int main() {
+    vector<int> v = {1,8,6,2,5,4,8,3,7};
+
+    Solution3 s;
     cout << s.maxArea(v) << endl;
 
 
