@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -34,11 +35,62 @@ public:
 
 
 
+
+
+
+
+
+class Solution2 {
+public:
+    int trap(vector<int>& height) {
+        // 双指针，一次遍历
+        int l = 0, r = height.size() - 1; // 双指针
+        int l_max = 0, r_max = 0, ans = 0;
+        while (l < r) {
+            if (height[l] < height[r]) {
+                l_max = max(l_max, height[l]);
+                ans += l_max - height[l];
+                l++;
+            } else {
+                r_max = max(r_max, height[r]);
+                ans += r_max - height[r];
+                r--;
+            }
+        }
+        return ans;
+    }
+};
+
+
+
+class Solution3 {
+public:
+    int trap(vector<int>& height) {
+        // 单调栈
+        int ans = 0;
+        stack<int> stk_index;
+        stk_index.push(0);
+        for (int i = 1; i < height.size(); i++) {
+            while(!stk_index.empty() && height[stk_index.top()] < height[i]) {
+                int water_index = stk_index.top();
+                stk_index.pop();
+                if (stk_index.empty()) {break;} // 没有左边界了
+                ans += (min(height[stk_index.top()], height[i]) - height[water_index]) * (i - stk_index.top() - 1);
+            }
+            stk_index.push(i);
+        }
+        return ans;
+    }
+};
+
+
+
+
+
 int main() {
+    vector<int> heights = {4,2,0,3,2,5};
 
-    vector<int> heights = {0,1,0,2,1,0,1,3,2,1,2,1};
-
-    Solution s;
+    Solution3 s;
     int ans = s.trap(heights);
 
     cout << ans << endl;
