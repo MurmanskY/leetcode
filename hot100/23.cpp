@@ -44,25 +44,43 @@ void printList(ListNode *head) {
 
 class Solution {
 public:
-    // solution1
     ListNode* reverseList(ListNode* head) {
         if (head == nullptr) {return nullptr;}
 
         ListNode *tail = head; // 指向排序完了的链表的最后一个
 
         while (tail->next != nullptr) {
-            // 如果没有遍历完
-            ListNode *node = new ListNode(tail->next->val, head);
-            tail->next = tail->next->next;
-            head = node;
 
-            // printList(head);
-            cout << endl;
+
+            ListNode * tail_next = tail->next; // 指向tail的下一个位置
+
+            tail->next = tail->next->next;
+
+            tail_next->next = head;
+
+
+            head = tail_next;
+
         }
 
         return head;
     }
 };
+
+
+
+// class Solution2 {
+// public:
+//     // solution2，原地翻转
+//     ListNode* reverseList(ListNode* head) {
+//         ListNode * prev = nullptr;
+//         ListNode * cur = head;
+//         while (cur != nullptr) {
+//
+//         }
+//     }
+// };
+
 
 
 int main() {
